@@ -7,12 +7,13 @@ const AddContactModal = ({ isOpen, onClose, contacts, setContacts }) => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [job, setjob] = useState("");
-	const addHandler = () => {
-		setContacts(prev => {
-			prev.push({name , email , job})
-		})
-		localStorage.setItem("contacts" , JSON.stringify(contacts))
-		console.log(contacts)
+	const addHandler = () => { 
+		contacts.push({name , email , job})
+     	localStorage.setItem("contacts" , JSON.stringify(contacts))
+		setName("")
+		setEmail("")
+		setjob("")
+		onClose()
 	}
 	return (
 		<div

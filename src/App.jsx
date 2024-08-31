@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import searchImg from "./assets/icons/search.png";
 import AddContactModal from "./components/AddContactModal";
 
 function App() {
 	const [searchText, setSearchText] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
-  const [contacts , setContacts] = useState(JSON.parse(localStorage.getItem("contacts")) || [])
+	const [contacts, setContacts] = useState([]);
+	useEffect(() => {
+		setContacts(JSON.parse(localStorage.getItem("contacts")) || []);
+	}, []);
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
@@ -21,15 +24,29 @@ function App() {
 				</div>
 			</nav>
 
-      <div className="flex items-center h-fit w-full justify-between py-4">
-        <h1 className="text-2xl font-semibold text-green-600">مخاطب ها</h1>
-        <div className="flex gap-3">
-          <button className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-blue-600">انتخاب گروهی</button>
-          <button onClick={() => setIsOpen(true)} className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-green-600">اضافه کردن</button>
-        </div>
-      </div>
-      <AddContactModal isOpen={isOpen} onClose={() => setIsOpen(false)} contacts={contacts} setContacts={setContacts}  />
-			
+			<div className="flex items-center h-fit w-full justify-between py-4">
+				<h1 className="text-2xl font-semibold text-green-600">مخاطب ها</h1>
+				<div className="flex gap-3">
+					<button className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-blue-600">
+						انتخاب گروهی
+					</button>
+					<button
+						onClick={() => setIsOpen(true)}
+						className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-green-600"
+					>
+						اضافه کردن
+					</button>
+				</div>
+			</div>
+			<AddContactModal
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}
+				contacts={contacts}
+				setContacts={setContacts}
+			/>
+			<div className="flex flex-col gap-5">
+				
+			</div>
 		</>
 	);
 }
