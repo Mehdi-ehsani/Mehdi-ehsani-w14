@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import searchImg from "./assets/icons/search.png";
 import AddContactModal from "./components/AddContactModal";
+import EditContactModal from "./components/EditContactModal";
 
 function App() {
 	const [searchText, setSearchText] = useState("");
 	const [isOpen, setIsOpen] = useState(false);
+	const [isEdit, setIsEdit] = useState(false);
 	const [contacts, setContacts] = useState([]);
+	const [editContact , setEditContact] = useState({})
+	const [index , setIndex] = useState(0)
 	useEffect(() => {
 		setContacts(JSON.parse(localStorage.getItem("contacts")) || []);
 	}, []);
@@ -13,6 +17,18 @@ function App() {
      const filteredContacts = contacts.filter((item , itemIndex) => itemIndex !== index);
 	 setContacts(filteredContacts)
 	 localStorage.setItem("contacts" , JSON.stringify(filteredContacts))
+   }
+
+   const editHandler = (index) => {
+	setIsEdit(true)
+	setIndex(index)
+	const filteredContacts = contacts.filter((item , itemIndex) => {
+		if(itemIndex === index ) {
+			return item
+		}
+	});
+	setEditContact(filteredContacts[0])
+	console.log(filteredContacts[0])
    }
 	return (
 		<>
@@ -45,9 +61,16 @@ function App() {
 			</div>
 			<AddContactModal
 				isOpen={isOpen}
-				onClose={() => setIsOpen(false)}
+				onClose={() => {setIsOpen(false); setIsEdit(false)}}
 				contacts={contacts}
-				setContacts={setContacts}
+			/>
+			<EditContactModal
+			    isEdit={isEdit}
+				onClose={() => {setIsOpen(false); setIsEdit(false)}}
+				contacts={contacts}
+				editContact={editContact}
+				setEditContact={setEditContact}
+				index={index}
 			/>
 			<div className="flex flex-col gap-5">
 				{contacts.length ? (
@@ -56,6 +79,7 @@ function App() {
 						<p>{contact.email}</p>
 						<p>{contact.job}</p>
 						<button onClick={() => deleteHandler(index)} className="bg-red-600">delete</button>
+						<button onClick={() => editHandler(index)} className="bg-sky-600">edit</button>
 					</div>)
 				) : (
 					<h1>no contatct</h1>

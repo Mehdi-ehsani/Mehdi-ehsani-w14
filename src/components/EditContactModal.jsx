@@ -3,47 +3,43 @@ import emailImg from "../assets/icons/email.png";
 import jobImg from "../assets/icons/job.png";
 import { useState } from "react";
 
-const AddContactModal = ({ isOpen, onClose, contacts }) => {
+const EditContactModal = ({ isEdit, onClose, contacts ,editContact , setEditContact ,index}) => {
 	const [error, setError] = useState({
 		name: "",
 		email: "",
 		job: "",
 	});
-	const [contact, setContact] = useState({
-		name: "",
-		email: "",
-		job: "",
-	});
+	
 	const changeHandler = (event) => {
 	
 		const name = event.target.name;
 		const value = event.target.value;
 		if (name === "name") {
-			setContact({ ...contact, name: value });
+			setEditContact({ ...editContact, name: value });
 		}
 		if (name === "email") {
-			setContact({ ...contact, email: value });
+			setEditContact({ ...editContact, email: value });
 		}
 		if (name === "job") {
-			setContact({ ...contact, job: value });
+			setEditContact({ ...editContact, job: value });
 		}
 	};
 	const addHandler = () => {
-		if (contact.name === "") {
+		if (editContact.name === "") {
 			setError(prev => ({...prev,name:"name is required"}));
 		}
-		if (contact.email === "") {
+		if (editContact.email === "") {
 			setError(prev => ({...prev ,email: "email is required"}));
 			
 		}
-		if (contact.job === "") {
+		if (editContact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
 			console.log(error)
 			return;
 		}
-		contacts.push(contact);
+		contacts[index] = editContact;
 		localStorage.setItem("contacts", JSON.stringify(contacts));
-		setContact({
+		setEditContact({
 			name: "",
 			email: "",
 			job: "",
@@ -60,7 +56,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 			dir="ltr"
 			onClick={onClose}
 			className={`fixed inset-0 flex items-center justify-center ${
-				isOpen ? "visible bg-black/25" : "invisible"
+				isEdit ? "visible bg-black/25" : "invisible"
 			} `}
 		>
 			<div
@@ -76,7 +72,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							className="w-full outline-none border-none placeholder:text-gray-400"
 							type="text"
 							placeholder="Name"
-							value={contact.name}
+							value={editContact.name}
 							onChange={changeHandler}
 						/>
 					</div>
@@ -90,7 +86,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							className="w-full outline-none border-none placeholder:text-gray-400"
 							type="text"
 							placeholder="Email"
-							value={contact.email}
+							value={editContact.email}
 							onChange={changeHandler}
 						/>
 					</div>
@@ -104,7 +100,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							className="w-full outline-none border-none placeholder:text-gray-400"
 							type="text"
 							placeholder="Job"
-							value={contact.job}
+							value={editContact.job}
 							onChange={changeHandler}
 						/>
 					</div>
@@ -121,7 +117,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 						onClick={addHandler}
 						className="w-full h-12 rounded-lg  text-xl bg-green-600 text-white "
 					>
-						Add
+						Submit
 					</button>
 				</div>
 			</div>
@@ -129,4 +125,4 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 	);
 };
 
-export default AddContactModal;
+export default EditContactModal;
