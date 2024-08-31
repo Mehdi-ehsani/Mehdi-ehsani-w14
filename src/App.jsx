@@ -1,4 +1,4 @@
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import searchImg from "./assets/icons/search.png";
 import AddContactModal from "./components/AddContactModal";
 
@@ -9,6 +9,11 @@ function App() {
 	useEffect(() => {
 		setContacts(JSON.parse(localStorage.getItem("contacts")) || []);
 	}, []);
+   const deleteHandler = (index) => {
+     const filteredContacts = contacts.filter((item , itemIndex) => itemIndex !== index);
+	 setContacts(filteredContacts)
+	 localStorage.setItem("contacts" , JSON.stringify(filteredContacts))
+   }
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
@@ -45,7 +50,16 @@ function App() {
 				setContacts={setContacts}
 			/>
 			<div className="flex flex-col gap-5">
-				
+				{contacts.length ? (
+					contacts.map((contact , index) => <div key={index}>
+						<p>{contact.name}</p>
+						<p>{contact.email}</p>
+						<p>{contact.job}</p>
+						<button onClick={() => deleteHandler(index)} className="bg-red-600">delete</button>
+					</div>)
+				) : (
+					<h1>no contatct</h1>
+				)}
 			</div>
 		</>
 	);

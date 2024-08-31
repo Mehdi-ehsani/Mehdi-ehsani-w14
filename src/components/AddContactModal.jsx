@@ -4,8 +4,12 @@ import jobImg from "../assets/icons/job.png";
 import { useState } from "react";
 
 const AddContactModal = ({ isOpen, onClose, contacts, setContacts }) => {
-
-    const [contact, setContact] = useState({
+	const [error, setError] = useState({
+		name: "",
+		email: "",
+		job: "",
+	});
+	const [contact, setContact] = useState({
 		name: "",
 		email: "",
 		job: "",
@@ -24,9 +28,26 @@ const AddContactModal = ({ isOpen, onClose, contacts, setContacts }) => {
 		}
 	};
 	const addHandler = () => {
+		if (contact.name === "") {
+			setError(prev => ({...prev,name:"name is required"}));
+		}
+		if (contact.email === "") {
+			setError(prev => ({...prev ,email: "email is required"}));
+			
+		}
+		if (contact.job === "") {
+			setError(prev => ({...prev,job: "job is required"}));
+			console.log(error)
+			return;
+		}
 		contacts.push(contact);
 		localStorage.setItem("contacts", JSON.stringify(contacts));
 		setContact({
+			name: "",
+			email: "",
+			job: "",
+		});
+		setError({
 			name: "",
 			email: "",
 			job: "",
@@ -46,38 +67,47 @@ const AddContactModal = ({ isOpen, onClose, contacts, setContacts }) => {
 				className="w-[400px] h-fit rounded-2xl shadow bg-white flex flex-col gap-6 p-6"
 			>
 				<h1 className="text-2xl font-bold text-center">Add Contact</h1>
-				<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
-					<img src={userImg} alt="icon" className="w-7" />
-					<input
-						name="name"
-						className="w-full outline-none border-none placeholder:text-gray-400"
-						type="text"
-						placeholder="Name"
-						value={contact.name}
-						onChange={changeHandler}
-					/>
+				<div>
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+						<img src={userImg} alt="icon" className="w-7" />
+						<input
+							name="name"
+							className="w-full outline-none border-none placeholder:text-gray-400"
+							type="text"
+							placeholder="Name"
+							value={contact.name}
+							onChange={changeHandler}
+						/>
+					</div>
+					<p className="text-red-600 uppercase text-sm mt-1">{error.name}</p>
 				</div>
-				<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
-					<img src={emailImg} alt="icon" className="w-7 " />
-					<input
-						name="email"
-						className="w-full outline-none border-none placeholder:text-gray-400"
-						type="text"
-						placeholder="Email"
-						value={contact.email}
-						onChange={changeHandler}
-					/>
+				<div>
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+						<img src={emailImg} alt="icon" className="w-7 " />
+						<input
+							name="email"
+							className="w-full outline-none border-none placeholder:text-gray-400"
+							type="text"
+							placeholder="Email"
+							value={contact.email}
+							onChange={changeHandler}
+						/>
+					</div>
+					<p className="text-red-600 uppercase text-sm mt-1">{error.email}</p>
 				</div>
-				<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
-					<img src={jobImg} alt="icon" className="w-7" />
-					<input
-						name="job"
-						className="w-full outline-none border-none placeholder:text-gray-400"
-						type="text"
-						placeholder="Job"
-						value={contact.job}
-						onChange={changeHandler}
-					/>
+				<div>
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+						<img src={jobImg} alt="icon" className="w-7" />
+						<input
+							name="job"
+							className="w-full outline-none border-none placeholder:text-gray-400"
+							type="text"
+							placeholder="Job"
+							value={contact.job}
+							onChange={changeHandler}
+						/>
+					</div>
+					<p className="text-red-600 uppercase text-sm mt-1">{error.job}</p>
 				</div>
 				<div className="w-full flex gap-4">
 					<button
