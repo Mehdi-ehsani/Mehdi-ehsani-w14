@@ -79,10 +79,10 @@ function App() {
 
 	return (
 		<>
-			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
-				<h1 className="text-3xl font-bold">Contacts</h1>
-				<div className="flex items-center h-10 w-96 py-2 pr-2 bg-slate-100 shadow-sm rounded-lg">
-					<img src={searchImg} alt="icon" className="h-10" />
+			<nav className="flex items-center justify-between w-full sm:h-[80px] h-fit border-b-2 border-slate-200 2xl:p-0 gap-5 sm:flex-row p-5 flex-col">
+				<h1 className="text-2xl font-bold text-[#222] "><span className="px-1 bg-blue-500 text-white rounded-lg">Contacts</span> App</h1>
+				<div className="flex items-center h-10 sm:w-96 w-full py-2 pr-2 bg-slate-100 shadow-sm rounded-lg">
+					<img src={searchImg} alt="icon" className="h-7 w-7 ml-2" />
 					<input
 						className="w-full h-full outline-none border-none bg-transparent"
 						type="text"
@@ -92,7 +92,7 @@ function App() {
 				</div>
 			</nav>
 
-			<div className="flex items-center h-fit w-full justify-between py-4">
+			<div className="flex items-center h-fit w-full justify-between py-4 px-5 2xl:px-0">
 				<h1 className="text-2xl font-semibold text-[#222]">Contacts</h1>
 				<div className="flex gap-3">
 					{isGroupSelect && (
@@ -138,7 +138,7 @@ function App() {
 				setEditContact={setEditContact}
 				index={index}
 			/>
-			<div className="flex flex-col gap-5">
+			<div className="flex items-center flex-col gap-5 2xl:p-0 px-5">
 				{filteredContacts.length ? (
 					filteredContacts.map((contact, index) => (
 						<Contact
@@ -154,7 +154,7 @@ function App() {
 					))
 				) : (
 					<div className="w-full h-full flex flex-col items-center justify-center">
-						<img src={emptyImg} alt="empty-icon" className="w-[600px] h-[600px]" />
+						<img src={emptyImg} alt="empty-icon" className="w-[300px] h-[300px] sm:w-[600px] sm:h-[600px]" />
 						<h1 className="text-3xl font-bold text-blue-500">Contacts is empty</h1>
 					</div>	
 				)}
