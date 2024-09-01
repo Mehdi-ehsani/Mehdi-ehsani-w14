@@ -11,6 +11,8 @@ function App() {
 	const [filteredContacts, setFilteredContacts] = useState([]);
 	const [editContact, setEditContact] = useState({});
 	const [index, setIndex] = useState(0);
+	const [isGroupSelect, setIsGroupSelect] = useState(false);
+	const [selectedContacts, setSelectedContacts] = useState([]); 
 
 	useEffect(() => {
 		const storedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
@@ -25,6 +27,16 @@ function App() {
 		setContacts(filteredContacts);
 		setFilteredContacts(filteredContacts);
 		localStorage.setItem("contacts", JSON.stringify(filteredContacts));
+	};
+
+	const deleteSelectedHandler = () => {
+		const filteredContacts = contacts.filter(
+			(contact, index) => !selectedContacts.includes(index)
+		);
+		setContacts(filteredContacts);
+		setFilteredContacts(filteredContacts);
+		localStorage.setItem("contacts", JSON.stringify(filteredContacts));
+		setSelectedContacts([]);
 	};
 
 	const editHandler = (index) => {
@@ -50,6 +62,14 @@ function App() {
 		setFilteredContacts(newFilteredContacts);
 	};
 
+	const toggleSelect = (index) => {
+		if (selectedContacts.includes(index)) {
+			setSelectedContacts(selectedContacts.filter((i) => i !== index));
+		} else {
+			setSelectedContacts([...selectedContacts, index]);
+		}
+	};
+
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
@@ -68,7 +88,10 @@ function App() {
 			<div className="flex items-center h-fit w-full justify-between py-4">
 				<h1 className="text-2xl font-semibold text-green-600">مخاطب ها</h1>
 				<div className="flex gap-3">
-					<button className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-blue-600">
+					<button
+						className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-blue-600"
+						onClick={() => setIsGroupSelect(!isGroupSelect)} 
+					>
 						انتخاب گروهی
 					</button>
 					<button
@@ -77,6 +100,14 @@ function App() {
 					>
 						اضافه کردن
 					</button>
+					{isGroupSelect && ( 
+						<button
+							onClick={deleteSelectedHandler}
+							className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-red-600"
+						>
+							حذف گروهی
+						</button>
+					)}
 				</div>
 			</div>
 			<AddContactModal
@@ -101,10 +132,19 @@ function App() {
 			<div className="flex flex-col gap-5">
 				{filteredContacts.length ? (
 					filteredContacts.map((contact, index) => (
-						<div key={index}>
-							<p>{contact.name}</p>
-							<p>{contact.email}</p>
-							<p>{contact.job}</p>
+						<div key={index} className="flex items-center gap-3">
+							{isGroupSelect && (
+								<input
+									type="checkbox"
+									checked={selectedContacts.includes(index)}
+									onChange={() => toggleSelect(index)}
+								/>
+							)}
+							<div>
+								<p>{contact.name}</p>
+								<p>{contact.email}</p>
+								<p>{contact.job}</p>
+							</div>
 							<button
 								onClick={() => deleteHandler(index)}
 								className="bg-red-600"
