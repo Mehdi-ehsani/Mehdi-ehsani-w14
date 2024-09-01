@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import searchImg from "./assets/icons/search.png";
+import binImg from "./assets/icons/bin.png";
+import readImg from "./assets/icons/read.png";
+import addImg from "./assets/icons/add.png";
+import emptyImg from "./assets/icons/empty.png";
+
 import AddContactModal from "./components/AddContactModal";
 import EditContactModal from "./components/EditContactModal";
+import Contact from "./components/Contact";
 
 function App() {
 	const [searchText, setSearchText] = useState("");
@@ -9,10 +15,10 @@ function App() {
 	const [isEdit, setIsEdit] = useState(false);
 	const [contacts, setContacts] = useState([]);
 	const [filteredContacts, setFilteredContacts] = useState([]);
-	const [editContact, setEditContact] = useState({});
+	const [editContact, setEditContact] = useState(null);
 	const [index, setIndex] = useState(0);
 	const [isGroupSelect, setIsGroupSelect] = useState(false);
-	const [selectedContacts, setSelectedContacts] = useState([]); 
+	const [selectedContacts, setSelectedContacts] = useState([]);
 
 	useEffect(() => {
 		const storedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
@@ -48,7 +54,6 @@ function App() {
 			}
 		});
 		setEditContact(filteredContacts[0]);
-		console.log(filteredContacts[0]);
 	};
 
 	const searchHandler = (event) => {
@@ -56,8 +61,10 @@ function App() {
 		setSearchText(query);
 
 		const newFilteredContacts = contacts.filter((contact) => {
-			return contact.name.toLowerCase().includes(query) ||
-				contact.email.toLowerCase().includes(query);
+			return (
+				contact.name.toLowerCase().includes(query) ||
+				contact.email.toLowerCase().includes(query)
+			);
 		});
 		setFilteredContacts(newFilteredContacts);
 	};
@@ -73,41 +80,43 @@ function App() {
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
-				<h1 className="text-3xl font-bold">مخاطب ها</h1>
+				<h1 className="text-3xl font-bold">Contacts</h1>
 				<div className="flex items-center h-10 w-96 py-2 pr-2 bg-slate-100 shadow-sm rounded-lg">
+					<img src={searchImg} alt="icon" className="h-10" />
 					<input
 						className="w-full h-full outline-none border-none bg-transparent"
 						type="text"
 						value={searchText}
 						onChange={searchHandler}
 					/>
-					<img src={searchImg} alt="icon" className="h-10" />
 				</div>
 			</nav>
 
 			<div className="flex items-center h-fit w-full justify-between py-4">
-				<h1 className="text-2xl font-semibold text-green-600">مخاطب ها</h1>
+				<h1 className="text-2xl font-semibold text-[#222]">Contacts</h1>
 				<div className="flex gap-3">
+					{isGroupSelect && (
+						<button
+							onClick={deleteSelectedHandler}
+							className="flex items-center justify-center h-10 w-10 text-white text-lg rounded-full shadow-md bg-red-100 hover:bg-red-300 transition-colors"
+						>
+							<img src={binImg} alt="icon"  className="w-6 h-6"/> 
+						</button>
+					)}
 					<button
-						className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-blue-600"
-						onClick={() => setIsGroupSelect(!isGroupSelect)} 
+						className="flex items-center justify-center h-10 w-10 text-white text-lg rounded-full shadow-md bg-blue-100 hover:bg-blue-300 transition-colors"
+						onClick={() => setIsGroupSelect(!isGroupSelect)}
 					>
-						انتخاب گروهی
+							<img src={readImg} alt="icon"  className="w-7 h-7"/> 
+						
 					</button>
 					<button
 						onClick={() => setIsOpen(true)}
-						className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-green-600"
+						className="flex items-center justify-center h-10 w-10 text-white text-lg rounded-full shadow-md bg-green-100 hover:bg-green-300 transition-colors"
 					>
-						اضافه کردن
+							<img src={addImg} alt="icon"  className="w-8 h-8"/> 
+						
 					</button>
-					{isGroupSelect && ( 
-						<button
-							onClick={deleteSelectedHandler}
-							className="h-10 w-28 text-white text-lg rounded-lg shadow-md bg-red-600"
-						>
-							حذف گروهی
-						</button>
-					)}
 				</div>
 			</div>
 			<AddContactModal
@@ -132,32 +141,22 @@ function App() {
 			<div className="flex flex-col gap-5">
 				{filteredContacts.length ? (
 					filteredContacts.map((contact, index) => (
-						<div key={index} className="flex items-center gap-3">
-							{isGroupSelect && (
-								<input
-									type="checkbox"
-									checked={selectedContacts.includes(index)}
-									onChange={() => toggleSelect(index)}
-								/>
-							)}
-							<div>
-								<p>{contact.name}</p>
-								<p>{contact.email}</p>
-								<p>{contact.job}</p>
-							</div>
-							<button
-								onClick={() => deleteHandler(index)}
-								className="bg-red-600"
-							>
-								delete
-							</button>
-							<button onClick={() => editHandler(index)} className="bg-sky-600">
-								edit
-							</button>
-						</div>
+						<Contact
+							key={index}
+							contact={contact}
+							index={index}
+							deleteHandler={deleteHandler}
+							editHandler={editHandler}
+							selectedContacts={selectedContacts}
+							toggleSelect={toggleSelect}
+							isGroupSelect={isGroupSelect}
+						/>
 					))
 				) : (
-					<h1>no contact</h1>
+					<div className="w-full h-full flex flex-col items-center justify-center">
+						<img src={emptyImg} alt="empty-icon" className="w-[600px] h-[600px]" />
+						<h1 className="text-3xl font-bold text-blue-500">Contacts is empty</h1>
+					</div>	
 				)}
 			</div>
 		</>

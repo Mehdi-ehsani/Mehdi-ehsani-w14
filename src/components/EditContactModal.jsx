@@ -51,6 +51,9 @@ const EditContactModal = ({ isEdit, onClose, contacts ,editContact , setEditCont
 		});
 		onClose();
 	};
+	if(!editContact) {
+		return null
+	}
 	return (
 		<div
 			dir="ltr"
