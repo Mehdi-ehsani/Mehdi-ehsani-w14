@@ -8,28 +8,48 @@ function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isEdit, setIsEdit] = useState(false);
 	const [contacts, setContacts] = useState([]);
-	const [editContact , setEditContact] = useState({})
-	const [index , setIndex] = useState(0)
-	useEffect(() => {
-		setContacts(JSON.parse(localStorage.getItem("contacts")) || []);
-	}, []);
-   const deleteHandler = (index) => {
-     const filteredContacts = contacts.filter((item , itemIndex) => itemIndex !== index);
-	 setContacts(filteredContacts)
-	 localStorage.setItem("contacts" , JSON.stringify(filteredContacts))
-   }
+	const [filteredContacts, setFilteredContacts] = useState([]);
+	const [editContact, setEditContact] = useState({});
+	const [index, setIndex] = useState(0);
 
-   const editHandler = (index) => {
-	setIsEdit(true)
-	setIndex(index)
-	const filteredContacts = contacts.filter((item , itemIndex) => {
-		if(itemIndex === index ) {
-			return item
-		}
-	});
-	setEditContact(filteredContacts[0])
-	console.log(filteredContacts[0])
-   }
+	useEffect(() => {
+		const storedContacts = JSON.parse(localStorage.getItem("contacts")) || [];
+		setContacts(storedContacts);
+		setFilteredContacts(storedContacts);
+	}, []);
+
+	const deleteHandler = (index) => {
+		const filteredContacts = contacts.filter(
+			(item, itemIndex) => itemIndex !== index
+		);
+		setContacts(filteredContacts);
+		setFilteredContacts(filteredContacts);
+		localStorage.setItem("contacts", JSON.stringify(filteredContacts));
+	};
+
+	const editHandler = (index) => {
+		setIsEdit(true);
+		setIndex(index);
+		const filteredContacts = contacts.filter((item, itemIndex) => {
+			if (itemIndex === index) {
+				return item;
+			}
+		});
+		setEditContact(filteredContacts[0]);
+		console.log(filteredContacts[0]);
+	};
+
+	const searchHandler = (event) => {
+		const query = event.target.value.toLowerCase();
+		setSearchText(query);
+
+		const newFilteredContacts = contacts.filter((contact) => {
+			return contact.name.toLowerCase().includes(query) ||
+				contact.email.toLowerCase().includes(query);
+		});
+		setFilteredContacts(newFilteredContacts);
+	};
+
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full h-[80px] border-b-2 border-slate-200">
@@ -39,7 +59,7 @@ function App() {
 						className="w-full h-full outline-none border-none bg-transparent"
 						type="text"
 						value={searchText}
-						onChange={(e) => setSearchText(e.target.value)}
+						onChange={searchHandler}
 					/>
 					<img src={searchImg} alt="icon" className="h-10" />
 				</div>
@@ -61,28 +81,43 @@ function App() {
 			</div>
 			<AddContactModal
 				isOpen={isOpen}
-				onClose={() => {setIsOpen(false); setIsEdit(false)}}
+				onClose={() => {
+					setIsOpen(false);
+					setIsEdit(false);
+				}}
 				contacts={contacts}
 			/>
 			<EditContactModal
-			    isEdit={isEdit}
-				onClose={() => {setIsOpen(false); setIsEdit(false)}}
+				isEdit={isEdit}
+				onClose={() => {
+					setIsOpen(false);
+					setIsEdit(false);
+				}}
 				contacts={contacts}
 				editContact={editContact}
 				setEditContact={setEditContact}
 				index={index}
 			/>
 			<div className="flex flex-col gap-5">
-				{contacts.length ? (
-					contacts.map((contact , index) => <div key={index}>
-						<p>{contact.name}</p>
-						<p>{contact.email}</p>
-						<p>{contact.job}</p>
-						<button onClick={() => deleteHandler(index)} className="bg-red-600">delete</button>
-						<button onClick={() => editHandler(index)} className="bg-sky-600">edit</button>
-					</div>)
+				{filteredContacts.length ? (
+					filteredContacts.map((contact, index) => (
+						<div key={index}>
+							<p>{contact.name}</p>
+							<p>{contact.email}</p>
+							<p>{contact.job}</p>
+							<button
+								onClick={() => deleteHandler(index)}
+								className="bg-red-600"
+							>
+								delete
+							</button>
+							<button onClick={() => editHandler(index)} className="bg-sky-600">
+								edit
+							</button>
+						</div>
+					))
 				) : (
-					<h1>no contatct</h1>
+					<h1>no contact</h1>
 				)}
 			</div>
 		</>
