@@ -1,6 +1,6 @@
-import userImg from "../assets/icons/user.png";
-import emailImg from "../assets/icons/email.png";
-import jobImg from "../assets/icons/job.png";
+import userImg from "../assets/icons/user.webp";
+import emailImg from "../assets/icons/email.webp";
+import jobImg from "../assets/icons/job.webp";
 import { useState } from "react";
 
 const EditContactModal = ({ isEdit, onClose, contacts ,editContact , setEditContact ,index}) => {

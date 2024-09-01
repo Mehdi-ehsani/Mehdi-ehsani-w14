@@ -1,6 +1,6 @@
 import React from "react";
-import editImg from "../assets/icons/edit.png";
-import binImg from "../assets/icons/bin.png";
+import editImg from "../assets/icons/edit.webp";
+import binImg from "../assets/icons/bin.webp";
 
 const Contact = ({
 	index,

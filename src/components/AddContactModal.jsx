@@ -1,6 +1,6 @@
-import userImg from "../assets/icons/user.png";
-import emailImg from "../assets/icons/email.png";
-import jobImg from "../assets/icons/job.png";
+import userImg from "../assets/icons/user.webp";
+import emailImg from "../assets/icons/email.webp";
+import jobImg from "../assets/icons/job.webp";
 import { useState } from "react";
 
 const AddContactModal = ({ isOpen, onClose, contacts }) => {
@@ -38,7 +38,6 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 		}
 		if (contact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
-			console.log(error)
 			return;
 		}
 		contacts.push(contact);

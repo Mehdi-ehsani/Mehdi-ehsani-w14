@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import searchImg from "./assets/icons/search.png";
-import binImg from "./assets/icons/bin.png";
-import readImg from "./assets/icons/read.png";
-import addImg from "./assets/icons/add.png";
-import emptyImg from "./assets/icons/empty.png";
+import searchImg from "./assets/icons/search.webp";
+import binImg from "./assets/icons/bin.webp";
+import readImg from "./assets/icons/read.webp";
+import addImg from "./assets/icons/add.webp";
+import emptyImg from "./assets/icons/empty.webp";
 
 import AddContactModal from "./components/AddContactModal";
 import EditContactModal from "./components/EditContactModal";
@@ -80,7 +80,7 @@ function App() {
 	return (
 		<>
 			<nav className="flex items-center justify-between w-full sm:h-[80px] h-fit border-b-2 border-slate-200 2xl:p-0 gap-5 sm:flex-row p-5 flex-col">
-				<h1 className="text-2xl font-bold text-[#222] "><span className="px-1 bg-blue-500 text-white rounded-lg">Contacts</span> App</h1>
+				<h1 className="text-2xl font-bold text-[#222] "><span className="p-1 bg-blue-500 text-white rounded-lg">Contacts</span> App</h1>
 				<div className="flex items-center h-10 sm:w-96 w-full py-2 pr-2 bg-slate-100 shadow-sm rounded-lg">
 					<img src={searchImg} alt="icon" className="h-7 w-7 ml-2" />
 					<input
