@@ -4,54 +4,30 @@ import jobImg from "../assets/icons/job.webp";
 import { useState } from "react";
 
 const AddContactModal = ({ isOpen, onClose, contacts }) => {
-	const [error, setError] = useState({
-		name: "",
-		email: "",
-		job: "",
-	});
-	const [contact, setContact] = useState({
-		name: "",
-		email: "",
-		job: "",
-	});
+	const [error, setError] = useState({name: "",email: "",job: ""});
+	const [contact, setContact] = useState({name: "",email: "",job: "",});
+
 	const changeHandler = (event) => {
-	
 		const name = event.target.name;
 		const value = event.target.value;
-		if (name === "name") {
-			setContact({ ...contact, name: value });
-		}
-		if (name === "email") {
-			setContact({ ...contact, email: value });
-		}
-		if (name === "job") {
-			setContact({ ...contact, job: value });
-		}
+
+		if (name === "name") {setContact({ ...contact, name: value })}
+		if (name === "email") {setContact({ ...contact, email: value })}
+		if (name === "job") {setContact({ ...contact, job: value })}
 	};
+
 	const addHandler = () => {
-		if (contact.name === "") {
-			setError(prev => ({...prev,name:"name is required"}));
-		}
-		if (contact.email === "") {
-			setError(prev => ({...prev ,email: "email is required"}));
-			
-		}
+		if (contact.name === "") {setError(prev => ({...prev,name:"name is required"}))}
+		if (contact.email === "") {setError(prev => ({...prev ,email: "email is required"}))}
 		if (contact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
 			return;
 		}
 		contacts.push(contact);
 		localStorage.setItem("contacts", JSON.stringify(contacts));
-		setContact({
-			name: "",
-			email: "",
-			job: "",
-		});
-		setError({
-			name: "",
-			email: "",
-			job: "",
-		});
+
+		setContact({name: "",email: "",job: ""});
+		setError({name: "",email: "",job: ""});
 		onClose();
 	};
 	return (

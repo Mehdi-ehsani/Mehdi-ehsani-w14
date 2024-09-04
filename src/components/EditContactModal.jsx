@@ -3,57 +3,35 @@ import emailImg from "../assets/icons/email.webp";
 import jobImg from "../assets/icons/job.webp";
 import { useState } from "react";
 
-const EditContactModal = ({ isEdit, onClose, contacts ,editContact , setEditContact ,index}) => {
-	const [error, setError] = useState({
-		name: "",
-		email: "",
-		job: "",
-	});
-	
+const EditContactModal = (props) => {
+	const [error, setError] = useState({name: "",email: "",job: ""});
+	const { isEdit, onClose, contacts ,editContact , setEditContact ,index} = props
+
 	const changeHandler = (event) => {
-	
 		const name = event.target.name;
 		const value = event.target.value;
-		if (name === "name") {
-			setEditContact({ ...editContact, name: value });
-		}
-		if (name === "email") {
-			setEditContact({ ...editContact, email: value });
-		}
-		if (name === "job") {
-			setEditContact({ ...editContact, job: value });
-		}
+
+		if (name === "name") {setEditContact({ ...editContact, name: value });}
+		if (name === "email") {setEditContact({ ...editContact, email: value });}
+		if (name === "job") {setEditContact({ ...editContact, job: value });}
 	};
+
 	const addHandler = () => {
-		if (editContact.name === "") {
-			setError(prev => ({...prev,name:"name is required"}));
-		}
-		if (editContact.email === "") {
-			setError(prev => ({...prev ,email: "email is required"}));
-			
-		}
+		if (editContact.name === "") {setError(prev => ({...prev,name:"name is required"}));}
+		if (editContact.email === "") {setError(prev => ({...prev ,email: "email is required"}));}
 		if (editContact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
-			console.log(error)
 			return;
 		}
 		contacts[index] = editContact;
 		localStorage.setItem("contacts", JSON.stringify(contacts));
-		setEditContact({
-			name: "",
-			email: "",
-			job: "",
-		});
-		setError({
-			name: "",
-			email: "",
-			job: "",
-		});
+
+		setEditContact({name: "",email: "",job: ""});
+		setError({name: "",email: "",job: ""});
 		onClose();
 	};
-	if(!editContact) {
-		return null
-	}
+	if(!editContact) return null;
+	
 	return (
 		<div
 			dir="ltr"
