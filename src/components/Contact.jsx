@@ -7,7 +7,7 @@ const Contact = (props) => {
 	return (
 		<div
 			key={index}
-			className="sm:w-full w-[300px] sm:h-16 sm:py-0 p-5  bg-slate-100 flex items-center justify-between rounded-xl flex-col sm:flex-row"
+			className="sm:w-full w-full sm:h-16 sm:py-0 p-5  bg-slate-100 flex items-center justify-between rounded-xl flex-col sm:flex-row"
 		>
 			{isGroupSelect && (
 				<input
@@ -17,7 +17,7 @@ const Contact = (props) => {
 					className="mr-2"
 				/>
 			)}
-			<div className="flex w-3/4 items-center justify-between text-lg flex-col sm:flex-row">
+			<div className="flex w-3/4 sm:gap-0 gap-3 items-center justify-between text-lg flex-col sm:flex-row">
 				<p>{contact.name}</p>
 				<p>{contact.email}</p>
 				<p className="text-blue-500">{contact.job}</p>
