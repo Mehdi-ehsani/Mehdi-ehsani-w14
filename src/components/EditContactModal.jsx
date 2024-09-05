@@ -15,10 +15,19 @@ const EditContactModal = (props) => {
 		if (name === "email") {setEditContact({ ...editContact, email: value });}
 		if (name === "job") {setEditContact({ ...editContact, job: value });}
 	};
-
+    const isValidEmail = email => {
+		const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+		return regex.test(email.toLowerCase())
+	
+	}
 	const addHandler = () => {
-		if (editContact.name === "") {setError(prev => ({...prev,name:"name is required"}));}
-		if (editContact.email === "") {setError(prev => ({...prev ,email: "email is required"}));}
+		if (editContact.name === "") {setError(prev => ({...prev,name:"name is required"})); return;}
+		if (editContact.email === "") {
+			setError(prev => ({...prev ,email: "email is required"}));
+		}else if(!isValidEmail(editContact.email)) {
+			setError(prev => ({...prev , email: "Please enter a valid email address"}));
+			return;
+		}
 		if (editContact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
 			return;
@@ -35,7 +44,8 @@ const EditContactModal = (props) => {
 	return (
 		<div
 			dir="ltr"
-			onClick={onClose}
+			
+			onClick={() => {onClose();  setError({name: "",email: "",job: ""});}}
 			className={`fixed inset-0 flex items-center justify-center ${
 				isEdit ? "visible bg-black/25 backdrop-blur-sm" : "invisible"
 			} `}
@@ -46,7 +56,7 @@ const EditContactModal = (props) => {
 			>
 				<h1 className="text-2xl font-bold text-center text-blue-500">Edit Contact</h1>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors ">
 						<img src={userImg} alt="icon" className="w-7" />
 						<input
 							name="name"
@@ -57,10 +67,10 @@ const EditContactModal = (props) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.name}</p>
+					<p className="text-red-500  text-sm mt-1">{error.name}</p>
 				</div>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors">
 						<img src={emailImg} alt="icon" className="w-7 " />
 						<input
 							name="email"
@@ -71,10 +81,10 @@ const EditContactModal = (props) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.email}</p>
+					<p className="text-red-500  text-sm mt-1">{error.email}</p>
 				</div>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors">
 						<img src={jobImg} alt="icon" className="w-7" />
 						<input
 							name="job"
@@ -85,7 +95,7 @@ const EditContactModal = (props) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.job}</p>
+					<p className="text-red-500  text-sm mt-1">{error.job}</p>
 				</div>
 				<div className="w-full flex gap-4">
 					<button

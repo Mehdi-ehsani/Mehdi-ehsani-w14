@@ -15,10 +15,21 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 		if (name === "email") {setContact({ ...contact, email: value })}
 		if (name === "job") {setContact({ ...contact, job: value })}
 	};
+    const isValidEmail = email => {
+		const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+		return regex.test(email.toLowerCase())
+	
+	}
 
 	const addHandler = () => {
-		if (contact.name === "") {setError(prev => ({...prev,name:"name is required"}))}
-		if (contact.email === "") {setError(prev => ({...prev ,email: "email is required"}))}
+		if (contact.name === "") {setError(prev => ({...prev,name:"name is required"}));return;}
+		if (contact.email === "") {
+			setError(prev => ({...prev ,email: "email is required"}))
+			return;
+		}else if(!isValidEmail(contact.email)) {
+			setError(prev => ({...prev , email: "Please enter a valid email address"}))
+			return;
+		}
 		if (contact.job === "") {
 			setError(prev => ({...prev,job: "job is required"}));
 			return;
@@ -33,7 +44,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 	return (
 		<div
 			dir="ltr"
-			onClick={onClose}
+			onClick={() => {onClose(), setError({name: "",email: "",job: ""}); setContact({name: "",email: "",job: ""});}}
 			className={`fixed inset-0 flex items-center justify-center ${
 				isOpen ? "visible bg-black/25 backdrop-blur-sm" : "invisible"
 			} `}
@@ -44,7 +55,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 			>
 				<h1 className="text-2xl font-bold text-center text-blue-500">Add Contact</h1>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors">
 						<img src={userImg} alt="icon" className="w-7" />
 						<input
 							name="name"
@@ -55,10 +66,10 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.name}</p>
+					<p className="text-red-500  text-sm mt-1">{error.name}</p>
 				</div>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors">
 						<img src={emailImg} alt="icon" className="w-7 " />
 						<input
 							name="email"
@@ -69,10 +80,10 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.email}</p>
+					<p className="text-red-500  text-sm mt-1">{error.email}</p>
 				</div>
 				<div>
-					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg">
+					<div className="flex w-full h-10 border-2 border-gray-200 py-1 px-2 gap-2 rounded-lg hover:border-blue-500 transition-colors">
 						<img src={jobImg} alt="icon" className="w-7" />
 						<input
 							name="job"
@@ -83,7 +94,7 @@ const AddContactModal = ({ isOpen, onClose, contacts }) => {
 							onChange={changeHandler}
 						/>
 					</div>
-					<p className="text-red-600 uppercase text-sm mt-1">{error.job}</p>
+					<p className="text-red-500  text-sm mt-1">{error.job}</p>
 				</div>
 				<div className="w-full flex gap-4">
 					<button
